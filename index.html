@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>企業併購（M&amp;A）與公平交易審查入門｜LLM Wiki 教學簡報</title>
+<style>
+  :root {
+    --bg-oat: #F7F3EE;
+    --card-white: #FFFDF9;
+    --card-milk: #EFE7DD;
+    --text-coffee: #3B2F2A;
+    --text-cocoa: #6E5D54;
+    --accent-caramel: #A67B5B;
+    --accent-caramel-dark: #8B6244;
+    --alert-terracotta: #C46D5E;
+    --alert-bg: #F9EAE7;
+    --success-sage: #5E7D67;
+    --success-bg: #EBF2ED;
+    --border-latte: #E2D6C8;
+    --shadow-soft: 0 14px 36px rgba(59, 47, 42, 0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-oat);
+    color: var(--text-coffee);
+    line-height: 1.65;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* Top Progress & Controls */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(247, 243, 238, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-latte);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-coffee);
+  }
+
+  .brand-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent-caramel);
+    display: inline-block;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 420px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 7px;
+    background: var(--card-milk);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--border-latte);
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 10%;
+    background: var(--accent-caramel);
+    border-radius: 999px;
+    transition: width 0.28s ease;
+  }
+
+  .page-counter {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-cocoa);
+    white-space: nowrap;
+  }
+
+  .toc-btn {
+    background: var(--card-white);
+    color: var(--text-coffee);
+    border: 1px solid var(--border-latte);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .toc-btn:hover {
+    background: var(--card-milk);
+    border-color: var(--accent-caramel);
+  }
+
+  /* Main Stage */
+  .stage-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px 82px;
+  }
+
+  .slide {
+    display: none;
+    width: 100%;
+    max-width: 1060px;
+    aspect-ratio: 16 / 9;
+    background: var(--card-white);
+    border: 1px solid var(--border-latte);
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+    padding: 36px 46px 54px;
+    position: relative;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: fadeIn 0.24s ease;
+  }
+
+  .slide.active {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .slide-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--accent-caramel);
+    text-transform: uppercase;
+  }
+
+  .slide-title {
+    font-size: 1.78rem;
+    font-weight: 800;
+    color: var(--text-coffee);
+    line-height: 1.28;
+  }
+
+  .slide-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .lead-text {
+    font-size: 1.12rem;
+    color: var(--text-coffee);
+    background: var(--card-milk);
+    padding: 18px 22px;
+    border-radius: 16px;
+    border-left: 5px solid var(--accent-caramel);
+  }
+
+  /* Grids & Cards */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .sub-card {
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  .sub-card.white-card {
+    background: var(--card-white);
+  }
+
+  .sub-card.alert-card {
+    background: var(--alert-bg);
+    border-color: #E5B9B1;
+  }
+
+  .card-tag {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--accent-caramel);
+    color: #FFFDF9;
+  }
+
+  .card-tag.alert {
+    background: var(--alert-terracotta);
+  }
+
+  .sub-card h3 {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--text-coffee);
+  }
+
+  .sub-card p, .sub-card li {
+    font-size: 0.96rem;
+    color: var(--text-cocoa);
+  }
+
+  .sub-card strong {
+    color: var(--text-coffee);
+  }
+
+  .clean-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .clean-list li {
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .clean-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent-caramel);
+    font-weight: 900;
+  }
+
+  /* Stat Banner */
+  .stat-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-pill {
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    border-radius: 14px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--accent-caramel-dark);
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--text-cocoa);
+  }
+
+  /* SVG Visual Box */
+  .svg-box {
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    border-radius: 16px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Quiz Styling */
+  .quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .quiz-box {
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .quiz-q {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-coffee);
+  }
+
+  .quiz-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .opt-btn {
+    background: var(--card-white);
+    border: 1px solid var(--border-latte);
+    color: var(--text-coffee);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .opt-btn:hover {
+    border-color: var(--accent-caramel);
+    background: #F6EFE6;
+  }
+
+  .opt-btn.correct {
+    background: var(--success-sage);
+    color: #fff;
+    border-color: var(--success-sage);
+  }
+
+  .opt-btn.wrong {
+    background: var(--alert-terracotta);
+    color: #fff;
+    border-color: var(--alert-terracotta);
+  }
+
+  .quiz-feedback {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .quiz-feedback.show {
+    display: block;
+  }
+
+  .quiz-feedback.ok {
+    background: var(--success-bg);
+    color: var(--success-sage);
+    font-weight: 600;
+  }
+
+  .quiz-feedback.no {
+    background: var(--alert-bg);
+    color: var(--alert-terracotta);
+    font-weight: 600;
+  }
+
+  /* Source Badge */
+  .source-badge {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.76rem;
+    color: var(--text-cocoa);
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 35;
+    background: rgba(255, 253, 249, 0.95);
+    border: 1px solid var(--border-latte);
+    box-shadow: 0 8px 24px rgba(59, 47, 42, 0.1);
+    border-radius: 999px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    background: var(--card-milk);
+    border: 1px solid var(--border-latte);
+    color: var(--text-coffee);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .nav-btn:hover:not(:disabled) {
+    background: var(--accent-caramel);
+    color: #fff;
+    border-color: var(--accent-caramel);
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .nav-hint {
+    font-size: 0.8rem;
+    color: var(--text-cocoa);
+    padding: 0 6px;
+  }
+
+  /* TOC Drawer */
+  .drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(59, 47, 42, 0.35);
+    z-index: 50;
+  }
+
+  .drawer-backdrop.open {
+    display: block;
+  }
+
+  .toc-drawer {
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 320px;
+    max-width: 86vw;
+    height: 100vh;
+    background: var(--card-white);
+    border-left: 1px solid var(--border-latte);
+    z-index: 60;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: right 0.25s ease;
+    box-shadow: -10px 0 30px rgba(59, 47, 42, 0.12);
+  }
+
+  .toc-drawer.open {
+    right: 0;
+  }
+
+  .drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-latte);
+    padding-bottom: 10px;
+  }
+
+  .drawer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+  }
+
+  .drawer-item {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    color: var(--text-coffee);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .drawer-item:hover {
+    background: var(--card-milk);
+  }
+
+  .drawer-item.current {
+    background: var(--card-milk);
+    border-color: var(--accent-caramel);
+    font-weight: 700;
+  }
+
+  /* Responsive Mobile Mode */
+  @media (max-width: 768px) {
+    .topbar {
+      padding: 10px 14px;
+    }
+    .brand span:last-child {
+      display: none;
+    }
+    .stage-wrapper {
+      padding: 14px 12px 86px;
+      align-items: flex-start;
+    }
+    .slide {
+      aspect-ratio: auto;
+      min-height: calc(100vh - 150px);
+      padding: 24px 20px 56px;
+      border-radius: 18px;
+    }
+    .slide-title {
+      font-size: 1.38rem;
+    }
+    .grid-2, .grid-3, .grid-4, .stat-bar, .quiz-grid {
+      grid-template-columns: 1fr;
+    }
+    .nav-hint {
+      display: none;
+    }
+    .source-badge {
+      position: static;
+      margin-top: 14px;
+      align-self: flex-end;
+      font-size: 0.72rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>LLM Wiki 教學簡報｜M&amp;A 與公平交易審查</span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="page-counter" id="pageCounter">1 / 10</div>
+    </div>
+    <button class="toc-btn" id="openTocBtn" type="button">目錄總覽</button>
+  </header>
+
+  <!-- Slide Stage -->
+  <main class="stage-wrapper" id="stageWrapper">
+
+    <!-- P1 -->
+    <section class="slide active" data-title="01. 封面與學習目標">
+      <div class="slide-header">
+        <span class="kicker">PAGE 01 · 學習導覽</span>
+        <h1 class="slide-title">企業併購（M&amp;A）與公平交易審查入門</h1>
+      </div>
+      <div class="slide-body">
+        <p class="lead-text">
+          大公司買下競爭對手，為什麼有時要經過政府點頭？這份簡報將帶你從零認識四件事：併購的基本定義與三大類型、台灣公平會的審查門檻與判斷天平、全聯併購大潤發的真實條件，以及併購過關後或破局時必須面對的法規代價。
+        </p>
+        <div class="grid-4">
+          <div class="sub-card">
+            <span class="card-tag">目標 01</span>
+            <h3>併購定義與三大類型</h3>
+            <p>分清楚水平、垂直與多角化併購的商業目的與差異。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">目標 02</span>
+            <h3>台灣公平會審查門檻</h3>
+            <p>掌握 2026 最新申報紅線與「整體經濟利益」審查天平。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">目標 03</span>
+            <h3>全聯併購大潤發實例</h3>
+            <p>看懂公平會為何開出 7 項行為面附加負擔有條件放行。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">目標 04</span>
+            <h3>合規代價與破局風險</h3>
+            <p>認識罰鍰訴訟消耗戰，以及外送平台遭禁賠付解約金案例。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/index.md</div>
+    </section>
+
+    <!-- P2 -->
+    <section class="slide" data-title="02. 買菜與叫外送的反壟斷問題">
+      <div class="slide-header">
+        <span class="kicker">PAGE 02 · 生活痛點導入</span>
+        <h2 class="slide-title">買菜與叫外送，為什麼跟反壟斷有關？</h2>
+      </div>
+      <div class="slide-body">
+        <p class="lead-text">
+          想像你常去的兩家大型超市，或手機裡最常用的兩大外送平台，某天突然宣布合併成同一家。原本為了搶客而互相降價、辦促銷的對手消失後，不只消費者可能面臨漲價、選擇變少，連上游供貨商與餐飲店家的談判籌碼也會跟著縮水。
+        </p>
+        <div class="grid-2">
+          <div class="sub-card">
+            <span class="card-tag">合併前：多家競爭</span>
+            <h3>價格與服務互相牽制</h3>
+            <p>超市與平台為了吸引顧客，必須維持優惠價格、豐富商品與合理店家抽成。</p>
+          </div>
+          <div class="sub-card alert-card">
+            <span class="card-tag alert">合併後：對手消失</span>
+            <h3>定價權集中與議價失衡</h3>
+            <p>缺少主要競爭者牽制，企業更容易單獨漲價，供貨商與餐廳也難轉單抗衡。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/merger-types.md, wiki/cases/pxmart-rtmart.md, wiki/concepts/compliance-risks.md</div>
+    </section>
+
+    <!-- P3 -->
+    <section class="slide" data-title="03. 什麼是併購（M&A）？">
+      <div class="slide-header">
+        <span class="kicker">PAGE 03 · M&amp;A 核心定義</span>
+        <h2 class="slide-title">什麼是併購（M&amp;A）？企業為何要買公司？</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="sub-card">
+            <span class="card-tag">01 核心定義</span>
+            <h3>合併＋收購的統稱</h3>
+            <p>透過合併或收購整合彼此的業務與資源，用來擴張版圖、提高市佔率並增強市場競爭力。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">02 常見交易形式</span>
+            <h3>不只整間買下這一種</h3>
+            <ul class="clean-list">
+              <li><strong>收購</strong>（依對方同意分善意、惡意）</li>
+              <li><strong>整併</strong>（兩家合成全新公司）</li>
+              <li><strong>買特定業務</strong>、策略聯盟、少數股權</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">03 五大商業動機</span>
+            <h3>花大錢背後的盤算</h3>
+            <p><strong>擴大市佔、規模經濟、拿技術、分散風險</strong>與<strong>減少競爭</strong>（例如統一併購台灣家樂福）。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/ma-overview.md</div>
+    </section>
+
+    <!-- P4 -->
+    <section class="slide" data-title="04. 三大併購類型怎麼分？">
+      <div class="slide-header">
+        <span class="kicker">PAGE 04 · 併購分類比較</span>
+        <h2 class="slide-title">用飲料店秒懂：三大併購類型怎麼分？</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="sub-card alert-card">
+            <span class="card-tag alert">反壟斷審查最嚴格</span>
+            <h3>水平併購（買隔壁同業）</h3>
+            <p>同產業層級合併，直接吃下競爭對手擴大市佔（例如<strong>全聯併大潤發</strong>），最容易引發壟斷疑慮。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">供應鏈整合</span>
+            <h3>垂直併購（買上游茶葉廠）</h3>
+            <p>串聯上下游以穩定原料成本與品質（例如<strong>台塑買石化原料商</strong>），審查重點在防範市場封鎖。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">跨業多元布局</span>
+            <h3>多角化併購（跨買遊戲業）</h3>
+            <p>又稱混合或跨界併購，跨足不同產業以分散風險、取得新技術（例如<strong>鴻海買 Sharp</strong>）。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/merger-types.md, wiki/glossary.md</div>
+    </section>
+
+    <!-- P5 -->
+    <section class="slide" data-title="05. 為什麼要經過公平會同意？">
+      <div class="slide-header">
+        <span class="kicker">PAGE 05 · 政府介入與法條範圍</span>
+        <h2 class="slide-title">企業買賣，為什麼要經過公平會同意？</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-2" style="align-items: center;">
+          <div class="sub-card">
+            <span class="card-tag">防繞道規避設計</span>
+            <h3>法條上的「結合」管得更寬</h3>
+            <p>
+              企業併購不只是私下交易，尤其水平結合會直接消滅對手。為防企業繞道規避，《公平交易法》第10條將「事業結合」定得比商業併購更寬，連<strong>持股達三分之一、共同經營或控制人事任免</strong>都納入，並由台灣反壟斷主管機關公平會把關市場競爭。
+            </p>
+          </div>
+          <div class="svg-box">
+            <svg viewBox="0 0 360 220" width="100%" height="210" aria-label="商業併購與公平法第10條事業結合範圍對照圖">
+              <circle cx="180" cy="110" r="98" fill="#EFE7DD" stroke="#A67B5B" stroke-width="2.5" stroke-dasharray="6 4"/>
+              <text x="180" y="34" text-anchor="middle" fill="#8B6244" font-size="13" font-weight="700">《公平交易法》第 10 條：事業結合</text>
+              <text x="180" y="53" text-anchor="middle" fill="#6E5D54" font-size="11">持股 ≥ 1/3 · 受讓主要營業 · 共同經營 · 控制人事</text>
+              <circle cx="180" cy="134" r="56" fill="#FFFDF9" stroke="#C46D5E" stroke-width="2.5"/>
+              <text x="180" y="130" text-anchor="middle" fill="#3B2F2A" font-size="13" font-weight="800">一般商業併購</text>
+              <text x="180" y="149" text-anchor="middle" fill="#6E5D54" font-size="11">合併 / 收購控制權</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/ftc-review.md, wiki/concepts/merger-types.md, wiki/glossary.md</div>
+    </section>
+
+    <!-- P6 -->
+    <section class="slide" data-title="06. 申報門檻與公平會審查天平">
+      <div class="slide-header">
+        <span class="kicker">PAGE 06 · 申報門檻與第 13 條審查邏輯</span>
+        <h2 class="slide-title">什麼時候要申報？公平會的審查天平</h2>
+      </div>
+      <div class="slide-body">
+        <div class="stat-bar">
+          <div class="stat-pill">
+            <div class="stat-num">市占 1/3 或 1/4</div>
+            <div class="stat-label">結合後達 1/3，或單方原達 1/4</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">200億＋30億（2026新制）</div>
+            <div class="stat-label">非金融國內門檻（金融400億、全球500億）</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">等待 30＋60 工作日</div>
+            <div class="stat-label">受理完整資料後期間不得偷跑</div>
+          </div>
+        </div>
+        <div class="svg-box">
+          <svg viewBox="0 0 640 140" width="100%" height="135" aria-label="公平會第13條審查天平示意圖">
+            <line x1="320" y1="22" x2="320" y2="122" stroke="#8B6244" stroke-width="4" stroke-linecap="round"/>
+            <polygon points="295,126 345,126 320,108" fill="#A67B5B"/>
+            <line x1="120" y1="48" x2="520" y2="32" stroke="#3B2F2A" stroke-width="3.5" stroke-linecap="round"/>
+            <rect x="40" y="60" width="210" height="44" rx="10" fill="#F9EAE7" stroke="#C46D5E" stroke-width="1.5"/>
+            <text x="145" y="80" text-anchor="middle" fill="#C46D5E" font-size="12" font-weight="800">限制競爭之不利益</text>
+            <text x="145" y="96" text-anchor="middle" fill="#6E5D54" font-size="11">單方漲價力 · 市場集中</text>
+            <rect x="390" y="44" width="210" height="44" rx="10" fill="#FFFDF9" stroke="#A67B5B" stroke-width="1.8"/>
+            <text x="495" y="64" text-anchor="middle" fill="#8B6244" font-size="12" font-weight="800">整體經濟利益（較重則放行）</text>
+            <text x="495" y="80" text-anchor="middle" fill="#6E5D54" font-size="11">效率回饋消費者 · 必要時加附負擔</text>
+          </svg>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/ftc-review.md</div>
+    </section>
+
+    <!-- P7 -->
+    <section class="slide" data-title="07. 全聯併購大潤發：天平兩端秤什麼？">
+      <div class="slide-header">
+        <span class="kicker">PAGE 07 · 台灣實戰案例（背景與衡量）</span>
+        <h2 class="slide-title">實戰案例：全聯併購大潤發，天平兩端秤什麼？</h2>
+      </div>
+      <div class="slide-body">
+        <div class="stat-bar">
+          <div class="stat-pill">
+            <div class="stat-num">95.97% 股份</div>
+            <div class="stat-label">2022 年全聯收購大潤發控制權</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">合計市占 38%</div>
+            <div class="stat-label">全國量販超市市場高度集中</div>
+          </div>
+          <div class="stat-pill">
+            <div class="stat-num">前三大逾 3/4</div>
+            <div class="stat-label">屬須深入審查之水平結合</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="sub-card alert-card">
+            <span class="card-tag alert">天平左端：限制競爭疑慮</span>
+            <h3>漲價誘因與最惠客戶條款</h3>
+            <p>恐提高單獨漲價力（單方效果），舊約「<strong>最惠客戶條款</strong>」（要求比照他家低價）亦壓抑他家通路降價。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">天平右端：整體經濟利益</span>
+            <h3>衛星倉調度與偏鄉服務</h3>
+            <p>以 <strong>22 間門市作衛星倉</strong>提升物流效率、降低缺貨，並推出<strong>偏鄉行動超市車</strong>服務民眾。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/cases/pxmart-rtmart.md, wiki/glossary.md</div>
+    </section>
+
+    <!-- P8 -->
+    <section class="slide" data-title="08. 公平會開出的 7 項行為面附加負擔">
+      <div class="slide-header">
+        <span class="kicker">PAGE 08 · 台灣實戰案例（附加負擔條件）</span>
+        <h2 class="slide-title">公平會開出的 7 項行為面附加負擔</h2>
+      </div>
+      <div class="slide-body">
+        <p style="font-size: 0.98rem; color: var(--text-cocoa);">
+          公平會未用<strong>結構面（賣資產）</strong>，改採 7 項<strong>行為面條件</strong>有條件放行：
+        </p>
+        <div class="grid-3">
+          <div class="sub-card">
+            <span class="card-tag">護消費者（2 項）</span>
+            <h3>守住價格與偏鄉同價</h3>
+            <ul class="clean-list">
+              <li>履行低價承諾、<strong>不任意漲價（官方負擔第 1 項）</strong></li>
+              <li><strong>3 年內</strong>維持全國門市一致訂價</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">護供貨商（4 項）</span>
+            <h3>禁止變相壓榨與跟價</h3>
+            <ul class="clean-list">
+              <li><strong>刪最惠客戶條款（官方負擔第 6 項）</strong></li>
+              <li>不任意調高附加費；<strong>3 年內</strong>免上架與新點費且交易條件不更不利</li>
+            </ul>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">持續監督（1 項）</span>
+            <h3>年度成果申報備查</h3>
+            <ul class="clean-list">
+              <li>每年 12 月 31 日前繳交<strong>年度履約報告</strong>供公平會檢視</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/cases/pxmart-rtmart.md, wiki/concepts/ftc-review.md</div>
+    </section>
+
+    <!-- P9 -->
+    <section class="slide" data-title="09. 過關或破局有多痛？法規遵循成本">
+      <div class="slide-header">
+        <span class="kicker">PAGE 09 · 法規遵循成本與風險</span>
+        <h2 class="slide-title">過關或破局有多痛？法規遵循成本與實例</h2>
+      </div>
+      <div class="slide-body">
+        <div class="grid-3">
+          <div class="sub-card">
+            <span class="card-tag">第 39 條法定罰則</span>
+            <h3>最高罰 5,000 萬或解散</h3>
+            <p>應申報未申報或未履行附加負擔，可罰 <strong>20 萬至 5,000 萬元</strong>，情節重大者得命分設或解散。</p>
+          </div>
+          <div class="sub-card">
+            <span class="card-tag">過關後的合規訴訟戰</span>
+            <h3>全聯 2,000 萬罰鍰與撤銷</h3>
+            <p>全聯 2024 年因變相跟價遭公平會罰 <strong>2,000 萬元</strong>，2026 年行政法院以舉證不足撤銷（可上訴）。</p>
+          </div>
+          <div class="sub-card alert-card">
+            <span class="card-tag alert">審查遭禁的破局代價</span>
+            <h3>Uber Eats 併 foodpanda</h3>
+            <p>結合後市占<strong>破 9 成</strong>無法靠附負擔補救，2024 年底遭公平會禁止，賠付約 <strong>2.5 億美元</strong>解約金。</p>
+          </div>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/compliance-risks.md, wiki/cases/pxmart-rtmart.md</div>
+    </section>
+
+    <!-- P10 -->
+    <section class="slide" data-title="10. 重點回顧與隨堂小測驗">
+      <div class="slide-header">
+        <span class="kicker">PAGE 10 · 總結與互動檢核</span>
+        <h2 class="slide-title">重點回顧與隨堂小測驗</h2>
+      </div>
+      <div class="slide-body">
+        <p class="lead-text" style="padding: 13px 18px; font-size: 1rem;">
+          <strong>重點口訣</strong>：水平結合審查最嚴；公平會秤「整體經濟利益大於限制競爭」決定放行、附負擔或禁止。
+        </p>
+        <div class="quiz-grid">
+          <div class="quiz-box" data-answer="B">
+            <div class="quiz-q">Q1：連鎖飲料店買下上游茶葉工廠，屬於哪一種併購？</div>
+            <div class="quiz-opts">
+              <button class="opt-btn" type="button" data-choice="A">A. 水平併購</button>
+              <button class="opt-btn" type="button" data-choice="B">B. 垂直併購</button>
+              <button class="opt-btn" type="button" data-choice="C">C. 多角化併購</button>
+            </div>
+            <div class="quiz-feedback" id="fb-0"></div>
+          </div>
+          <div class="quiz-box" data-answer="B">
+            <div class="quiz-q">Q2：公平會要求全聯「不任意漲價、刪最惠客戶條款」屬哪類措施？</div>
+            <div class="quiz-opts">
+              <button class="opt-btn" type="button" data-choice="A">A. 結構面措施</button>
+              <button class="opt-btn" type="button" data-choice="B">B. 行為面措施</button>
+              <button class="opt-btn" type="button" data-choice="C">C. 禁止結合</button>
+            </div>
+            <div class="quiz-feedback" id="fb-1"></div>
+          </div>
+        </div>
+        <div>
+          <button class="toc-btn" id="resetQuizBtn" type="button">重新作答小測驗</button>
+        </div>
+      </div>
+      <div class="source-badge">Source: wiki/concepts/merger-types.md, wiki/concepts/ftc-review.md, wiki/cases/pxmart-rtmart.md</div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav" aria-label="簡報換頁控制">
+    <button class="nav-btn" id="prevBtn" type="button">← 上一頁</button>
+    <span class="nav-hint">支援鍵盤 ← → 換頁</span>
+    <button class="nav-btn" id="nextBtn" type="button">下一頁 →</button>
+  </nav>
+
+  <!-- TOC Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="toc-drawer" id="tocDrawer" aria-label="簡報目錄">
+    <div class="drawer-head">
+      <strong>簡報目錄（共 10 頁）</strong>
+      <button class="toc-btn" id="closeTocBtn" type="button">關閉</button>
+    </div>
+    <ul class="drawer-list" id="drawerList"></ul>
+  </aside>
+
+<script>
+  (function () {
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const total = slides.length;
+    let current = 0;
+
+    const progressFill = document.getElementById('progressFill');
+    const pageCounter = document.getElementById('pageCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const openTocBtn = document.getElementById('openTocBtn');
+    const closeTocBtn = document.getElementById('closeTocBtn');
+    const tocDrawer = document.getElementById('tocDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerList = document.getElementById('drawerList');
+
+    // Build TOC items
+    slides.forEach((slide, idx) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'drawer-item';
+      btn.textContent = slide.dataset.title || `第 ${idx + 1} 頁`;
+      btn.addEventListener('click', () => {
+        goTo(idx);
+        toggleDrawer(false);
+      });
+      li.appendChild(btn);
+      drawerList.appendChild(li);
+    });
+
+    const drawerItems = Array.from(document.querySelectorAll('.drawer-item'));
+
+    function goTo(index) {
+      if (index < 0 || index >= total) return;
+      slides[current].classList.remove('active');
+      drawerItems[current].classList.remove('current');
+      current = index;
+      slides[current].classList.add('active');
+      drawerItems[current].classList.add('current');
+
+      const pct = ((current + 1) / total) * 100;
+      progressFill.style.width = pct + '%';
+      pageCounter.textContent = `${current + 1} / ${total}`;
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current === total - 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleDrawer(open) {
+      tocDrawer.classList.toggle('open', open);
+      drawerBackdrop.classList.toggle('open', open);
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    openTocBtn.addEventListener('click', () => toggleDrawer(true));
+    closeTocBtn.addEventListener('click', () => toggleDrawer(false));
+    drawerBackdrop.addEventListener('click', () => toggleDrawer(false));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+        goTo(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        goTo(current - 1);
+      } else if (e.key === 'Home') {
+        goTo(0);
+      } else if (e.key === 'End') {
+        goTo(total - 1);
+      } else if (e.key === 'Escape') {
+        toggleDrawer(false);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) > 55) {
+        if (dx < 0) goTo(current + 1);
+        else goTo(current - 1);
+      }
+    }, { passive: true });
+
+    // Interactive Quiz Logic
+    const explanations = [
+      {
+        ok: '答對了！飲料店與上游茶葉廠屬於供應鏈上下游整合，正是「垂直併購」（來源：wiki/concepts/merger-types.md）。',
+        no: '再想一下喔！茶葉廠是飲料店的上游原料供應商，上下游整合屬於 B. 垂直併購（來源：wiki/concepts/merger-types.md）。'
+      },
+      {
+        ok: '完全正確！公平會沒有採結構面要求賣資產或拆門市，而是以 7 項規範經營行為的「行為面措施」放行（來源：wiki/cases/pxmart-rtmart.md）。',
+        no: '差一點！要求企業遵守特定經營承諾（不任意漲價、刪條款）屬於 B. 行為面措施（來源：wiki/cases/pxmart-rtmart.md）。'
+      }
+    ];
+
+    const quizBoxes = Array.from(document.querySelectorAll('.quiz-box'));
+    quizBoxes.forEach((box, qIdx) => {
+      const ans = box.dataset.answer;
+      const buttons = Array.from(box.querySelectorAll('.opt-btn'));
+      const fb = document.getElementById(`fb-${qIdx}`);
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          buttons.forEach((b) => b.classList.remove('correct', 'wrong'));
+          const isRight = btn.dataset.choice === ans;
+          btn.classList.add(isRight ? 'correct' : 'wrong');
+          fb.textContent = isRight ? explanations[qIdx].ok : explanations[qIdx].no;
+          fb.className = 'quiz-feedback show ' + (isRight ? 'ok' : 'no');
+        });
+      });
+    });
+
+    document.getElementById('resetQuizBtn').addEventListener('click', () => {
+      quizBoxes.forEach((box, qIdx) => {
+        box.querySelectorAll('.opt-btn').forEach((b) => b.classList.remove('correct', 'wrong'));
+        const fb = document.getElementById(`fb-${qIdx}`);
+        fb.className = 'quiz-feedback';
+        fb.textContent = '';
+      });
+    });
+
+    goTo(0);
+  })();
+</script>
+</body>
+</html>
